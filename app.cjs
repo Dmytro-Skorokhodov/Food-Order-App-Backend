@@ -25,7 +25,7 @@ app.options("*", (req, res) => {
   res.sendStatus(200);
 });
 
-app.get("/meals", async (req, res) => {
+app.get("/", async (req, res) => {
   const meals = await fs.readFile("./data/available-meals.json", "utf8");
   res.json(JSON.parse(meals));
 });
@@ -78,7 +78,5 @@ app.use((req, res) => {
 
   res.status(404).json({ message: "Not found" });
 });
-
-
 
 module.exports = app;
