@@ -25,7 +25,7 @@ app.options("*", (req, res) => {
   res.sendStatus(200);
 });
 
-app.get("/", async (req, res) => {
+app.get("/meals", async (req, res) => {
   const meals = await fs.readFile("./data/available-meals.json", "utf8");
   res.json(JSON.parse(meals));
 });
