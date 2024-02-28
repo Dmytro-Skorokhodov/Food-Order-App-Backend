@@ -81,16 +81,17 @@ app.use((req, res) => {
     return res.sendStatus(200);
   }
 
-  res.status(404).json({ message: "Not found" });
+  res.status(404).json({ message: "Not foundd" });
 });
 
 pool
   .connect()
   .then(() => {
-    res.send("Connected!")
+    res.send("Connected!");
   })
   .catch((err) => {
     console.error(err);
+    
   });
 
 module.exports = app;
