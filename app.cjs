@@ -86,7 +86,9 @@ app.use((req, res) => {
 
 pool
   .connect()
-  .then(() => {})
+  .then(() => {
+    res.send("Connected!")
+  })
   .catch((err) => {
     console.error(err);
   });
