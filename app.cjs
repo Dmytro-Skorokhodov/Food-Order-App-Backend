@@ -10,6 +10,7 @@ const { Pool } = pg;
 
 const pool = new Pool({
   connectionString: process.env.POSTGRES_URL,
+  
 });
 
 app.use(bodyParser.json());
@@ -34,9 +35,12 @@ app.get("/meals", async (req, res) => {
   // res.status(200).json({ message: "ALSO WORKING!" });
   // // const meals = await fs.readFile("./data/available-meals.json", "utf8");
   try {
-    const meals = await pool.query("SELECT * FROM meals;");
-    const data = meals.rows;
-    res.status(200).json(data);
+    await pool.query("SELECT * FROM meals;").then((err,results) => {
+      const data = results.rows;
+      res.status(200).json(data);
+    })
+   
+    
   } catch (err) {
     res.status(200).json({ message: err });
   }
