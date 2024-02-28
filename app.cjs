@@ -30,14 +30,14 @@ app.options("*", (req, res) => {
   res.sendStatus(200);
 });
 
-app.get("/meals", async (req, res) => {
+app.get("https://food-order-app-backend-smoky.vercel.app/meals", async (req, res) => {
   // const meals = await fs.readFile("./data/available-meals.json", "utf8");
   const meals = await pool.query("SELECT * FROM meals;");
   const data = meals.rows;
   res.json(data);
 });
 
-app.post("/orders", async (req, res) => {
+app.post("https://food-order-app-backend-smoky.vercel.app/orders", async (req, res) => {
   const orderData = req.body.order;
   console.log(orderData);
 
