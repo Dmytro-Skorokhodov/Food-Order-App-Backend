@@ -77,7 +77,7 @@ app.post("https://food-order-app-backend-smoky.vercel.app/orders", async (req, r
 });
 
 
-app.get("https://food-order-app-backend-smoky.vercel.app", (req,res,next) => {
+app.get("/", (req,res,next) => {
   res.status(200).json({message: "ITS WORKING!"});
 })
 
