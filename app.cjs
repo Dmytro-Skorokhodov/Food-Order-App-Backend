@@ -32,9 +32,13 @@ app.options("*", (req, res) => {
 
 app.get("/meals", async (req, res) => {
   // const meals = await fs.readFile("./data/available-meals.json", "utf8");
-  const meals = await pool.query("SELECT * FROM meals;");
-  const data = meals.rows;
-  res.json(data);
+  try {
+    const meals = await pool.query("SELECT * FROM meals;");
+    const data = meals.rows;
+    res.json(data);
+  } catch (err) {
+    throw err;
+  }
 });
 
 app.post("/orders", async (req, res) => {
@@ -76,10 +80,9 @@ app.post("/orders", async (req, res) => {
   res.status(201).json({ message: "Order created!" });
 });
 
-
-app.get("/", (req,res,next) => {
-  res.status(200).json({message: "ITS WORKING!"});
-})
+app.get("/", (req, res, next) => {
+  res.status(200).json({ message: "ITS WORKING!" });
+});
 
 app.use((req, res) => {
   if (req.method === "OPTIONS") {
@@ -96,7 +99,6 @@ pool
   })
   .catch((err) => {
     console.error(err);
-    
   });
 
 module.exports = app;
