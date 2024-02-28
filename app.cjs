@@ -31,7 +31,7 @@ app.options("*", (req, res) => {
 });
 
 app.get("/meals", async (req, res) => {
-  res.sendStatus(200).json({message: "ALSO WORKING!"})
+  res.status(200).json({message: "ALSO WORKING!"})
   // const meals = await fs.readFile("./data/available-meals.json", "utf8");
   try {
     const meals = await pool.query("SELECT * FROM meals;");
