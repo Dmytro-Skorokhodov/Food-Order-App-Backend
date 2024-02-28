@@ -33,15 +33,13 @@ app.options("*", (req, res) => {
 app.get("/meals", async (req, res) => {
   // res.status(200).json({ message: "ALSO WORKING!" });
   // // const meals = await fs.readFile("./data/available-meals.json", "utf8");
-  try {
-    await pool.query("SELECT * FROM meals").then((err, results) => {
-     
-      const data = results.rows;
+ 
+      const meals = await pool.query("SELECT * from meals");
+      const data = meals.rows;
       res.status(200).json(data);
-    });
-  } catch (err) {
-    res.status(200).json({ message: err });
-  }
+    
+
+  
 });
 
 app.post("/orders", async (req, res) => {
@@ -98,7 +96,7 @@ app.use((req, res) => {
 pool
   .connect()
   .then(() => {
-    res.send("Connected!");
+    app.listen(2113);
   })
   .catch((err) => {
     console.error(err);
