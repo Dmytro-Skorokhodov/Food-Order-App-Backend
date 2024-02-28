@@ -30,7 +30,7 @@ app.options("*", (req, res) => {
   res.sendStatus(200);
 });
 
-app.get("https://food-order-app-backend-smoky.vercel.app/meals", async (req, res) => {
+app.get("food-order-app-backend-smoky.vercel.app/meals", async (req, res) => {
   // const meals = await fs.readFile("./data/available-meals.json", "utf8");
   const meals = await pool.query("SELECT * FROM meals;");
   const data = meals.rows;
@@ -81,7 +81,7 @@ app.use((req, res) => {
     return res.sendStatus(200);
   }
 
-  res.status(404).json({ message: "Not foundd" });
+  res.status(404).json({ message: "Not found" });
 });
 
 pool
