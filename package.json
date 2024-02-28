@@ -4,10 +4,7 @@
   "description": "",
   "main": "index.js",
   "type": "module",
-  "scripts": {
-   
-   
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -17,7 +14,9 @@
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
     "node": "^21.6.2",
-    "nodemon": "^3.0.3",
     "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   }
 }
