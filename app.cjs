@@ -34,9 +34,9 @@ app.get("/meals", async (req, res) => {
   // res.status(200).json({ message: "ALSO WORKING!" });
   // // const meals = await fs.readFile("./data/available-meals.json", "utf8");
 
-  const meals = await pool.query("SELECT * FROM meals;");
-  const data = meals.rows;
-  res.status(200).json(data);
+  // const meals = await pool.query("SELECT * FROM meals;");
+  // const data = meals.rows;
+  // res.status(200).json(data);
 });
 
 app.post("/orders", async (req, res) => {
@@ -78,8 +78,11 @@ app.post("/orders", async (req, res) => {
   res.status(201).json({ message: "Order created!" });
 });
 
-app.get("/", (req, res, next) => {
-  res.status(200).json({ message: "ITS WORKING!" });
+app.get("/", async (req, res, next) => {
+  const meals = await pool.query("SELECT * FROM meals;");
+  const data = meals.rows;
+  res.status(200).json(data);
+  // res.status(200).json({ message: "ITS WORKING!" });
 });
 
 app.use((req, res) => {
