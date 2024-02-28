@@ -3,13 +3,18 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const pg = require("pg");
+require("dotenv/config");
 
+const { Pool } = pg;
 
+const pool = new Pool({
+  connectionString: process.env.POSTGRES_URL,
+});
 
 app.use(bodyParser.json());
 app.use(express.static("public"));
 app.use(cors());
-
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -26,8 +31,10 @@ app.options("*", (req, res) => {
 });
 
 app.get("/meals", async (req, res) => {
-  const meals = await fs.readFile("./data/available-meals.json", "utf8");
-  res.json(JSON.parse(meals));
+  // const meals = await fs.readFile("./data/available-meals.json", "utf8");
+  const meals = await pool.query("SELECT * FROM meals;");
+  const data = meals.rows;
+  res.json(data);
 });
 
 app.post("/orders", async (req, res) => {
@@ -35,12 +42,10 @@ app.post("/orders", async (req, res) => {
   console.log(orderData);
 
   if (orderData.items === null || orderData.items.length === 0) {
-    return res
-      .status(400)
-      .json({
-        message:
-          "Missing meals in order, please consider adding some meals before send an order.",
-      });
+    return res.status(400).json({
+      message:
+        "Missing meals in order, please consider adding some meals before send an order.",
+    });
   }
 
   if (
@@ -78,5 +83,12 @@ app.use((req, res) => {
 
   res.status(404).json({ message: "Not found" });
 });
+
+pool
+  .connect()
+  .then(() => {})
+  .catch((err) => {
+    console.error(err);
+  });
 
 module.exports = app;
