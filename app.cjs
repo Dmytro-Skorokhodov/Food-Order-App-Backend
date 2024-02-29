@@ -90,7 +90,7 @@ app.use((req, res) => {
 pool
   .connect()
   .then(() => {
-    app.listen(3000);
+    
   })
   .catch((err) => {
     console.error(err);
