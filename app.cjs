@@ -40,9 +40,8 @@ app.get("/meals", async (req, res) => {
   res.json(data);
 });
 
-app.post("https://food-order-app-backend-smoky.vercel.app/orders", async (req, res) => {
+app.post("/orders", async (req, res) => {
   const orderData = req.body.order;
-  console.log(orderData);
 
   if (orderData.items === null || orderData.items.length === 0) {
     return res.status(400).json({
