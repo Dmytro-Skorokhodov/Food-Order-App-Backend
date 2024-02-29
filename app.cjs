@@ -1,7 +1,7 @@
 const fs = require("fs").promises;
 const bodyParser = require("body-parser");
 const express = require("express");
-// const cors = require("cors");
+const cors = require("cors");
 const app = express();
 const pg = require("pg");
 require("dotenv/config");
