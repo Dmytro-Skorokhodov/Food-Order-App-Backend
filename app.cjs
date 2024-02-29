@@ -14,7 +14,11 @@ const pool = new Pool({
 
 app.use(bodyParser.json());
 app.use(express.static("public"));
-app.use(cors());
+app.use(cors({
+  origin: 'https://food-order-app-front-6m6hkqw5i-dmytro-skorokhodovs-projects.vercel.app',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+}));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
