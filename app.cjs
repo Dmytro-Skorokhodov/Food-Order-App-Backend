@@ -35,9 +35,15 @@ app.options("*", (req, res) => {
 });
 
 app.get("/meals", async (req, res) => {
-  const meals = await pool.query("SELECT * FROM meals;");
-  const data = meals.rows;
-  res.json(data);
+  try{
+    const meals = await pool.query("SELECT * FROM meals;");
+    const data = meals.rows;
+    res.json(data);
+  }
+  catch(err){
+    res.status(400).json({message: err})
+  }
+  
 });
 
 app.post("/orders", async (req, res) => {
