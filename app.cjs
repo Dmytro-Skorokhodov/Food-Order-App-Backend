@@ -14,11 +14,14 @@ const pool = new Pool({
 
 app.use(bodyParser.json());
 app.use(express.static("public"));
-app.use(cors({
-  origin: 'https://food-order-app-front-6m6hkqw5i-dmytro-skorokhodovs-projects.vercel.app',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin:
+      "https://food-order-app-front-6m6hkqw5i-dmytro-skorokhodovs-projects.vercel.app",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+  })
+);
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -35,15 +38,23 @@ app.options("*", (req, res) => {
 });
 
 app.get("/meals", async (req, res) => {
-  try{
+  try {
     const meals = await pool.query("SELECT * FROM meals;");
     const data = meals.rows;
     res.json(data);
+  } catch (err) {
+    res.status(400).json({ message: err });
   }
-  catch(err){
-    res.status(400).json({message: err})
+});
+
+app.get("/orders", async (req, res) => {
+  try {
+    const orderResponse = await pool.query("SELECT * from orders");
+    const data = orderResponse.rows;
+    res.json(data);
+  } catch (err) {
+    res.status(err).json({ message: err });
   }
-  
 });
 
 app.post("/orders", async (req, res) => {
