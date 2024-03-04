@@ -88,11 +88,18 @@ app.post("/orders", async (req, res) => {
     ...orderData,
     id: (Math.random() * 1000).toString(),
   };
-  const orders = await fs.readFile("./data/orders.json", "utf8");
-  const allOrders = JSON.parse(orders);
-  allOrders.push(newOrder);
-  await fs.writeFile("./data/orders.json", JSON.stringify(allOrders));
-  res.status(201).json({ message: "Order created!" });
+  // const orders = await fs.readFile("./data/orders.json", "utf8");
+  // const allOrders = JSON.parse(orders);
+  // allOrders.push(newOrder);
+  // await fs.writeFile("./data/orders.json", JSON.stringify(allOrders));
+  // res.status(201).json({ message: "Order created!" });
+
+  await pool
+    .query(
+      "INSERT INTO (name, email, street, city) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [newOrder.name, newOrder.email, newOrder.street, newOrder.city]
+    )
+    .catch((err) => res.json(err));
 });
 
 app.use((req, res) => {
