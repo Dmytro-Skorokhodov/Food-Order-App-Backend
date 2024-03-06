@@ -95,8 +95,14 @@ app.post("/orders", async (req, res) => {
   // res.status(201).json({ message: "Order created!" });
   await pool
     .query(
-      "INSERT INTO (name, email, street, city, postal_code) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-      [newOrder.name, newOrder.email, newOrder.street, newOrder.city, newOrder["postal-code"]]
+      "INSERT INTO orders (name, email, street, city, postal_code) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+      [
+        newOrder.name,
+        newOrder.email,
+        newOrder.street,
+        newOrder.city,
+        newOrder["postal-code"],
+      ]
     )
     .then(() => {
       res.status(200).json({ message: "Order created!" });
