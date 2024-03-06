@@ -58,9 +58,10 @@ app.get("/orders", async (req, res) => {
 });
 
 app.post("/orders", async (req, res) => {
+  console.log(req);
   const orderData = req.body.order;
 
-  res.json({message: orderData});
+  res.json({ message: orderData });
 
   // if (orderData.items === null || orderData.items.length === 0) {
   //   return res.status(400).json({
