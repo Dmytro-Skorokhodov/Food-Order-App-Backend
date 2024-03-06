@@ -14,14 +14,14 @@ const pool = new Pool({
 
 app.use(bodyParser.json());
 app.use(express.static("public"));
-app.use(
-  cors({
-    origin:
-      "https://food-order-app-front-6m6hkqw5i-dmytro-skorokhodovs-projects.vercel.app",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true,
-  })
-);
+app.use(cors());
+
+// {
+//   origin:
+//     "https://food-order-app-front-6m6hkqw5i-dmytro-skorokhodovs-projects.vercel.app",
+//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//   credentials: true,
+// }
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -61,7 +61,7 @@ app.post("/orders", async (req, res) => {
   console.log(req);
   const orderData = req.body.order;
 
-  res.json({ message: orderData });
+  return res.status(200).json({ message: orderData });
 
   // if (orderData.items === null || orderData.items.length === 0) {
   //   return res.status(400).json({
