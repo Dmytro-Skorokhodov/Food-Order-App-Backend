@@ -61,42 +61,40 @@ app.post("/orders", async (req, res) => {
   console.log(req);
   const orderData = req.body.order;
 
-  return res.status(200).json({ message: orderData });
+  if (orderData.items === null || orderData.items.length === 0) {
+    return res.status(400).json({
+      message:
+        "Missing meals in order, please consider adding some meals before send an order.",
+    });
+  }
 
-  // if (orderData.items === null || orderData.items.length === 0) {
-  //   return res.status(400).json({
-  //     message:
-  //       "Missing meals in order, please consider adding some meals before send an order.",
-  //   });
-  // }
+  if (
+    orderData.email === null ||
+    !orderData.email.includes("@") ||
+    orderData.name === null ||
+    orderData.name.trim() === "" ||
+    orderData.street === null ||
+    orderData.street.trim() === "" ||
+    orderData["postal-code"] === null ||
+    orderData["postal-code"].trim() === "" ||
+    orderData.city === null ||
+    orderData.city.trim() === ""
+  ) {
+    return res.status(400).json({
+      message: "Missing data: Email, name, street, postal code or city is missing.",
+    });
+  }
 
-  // if (
-  //   orderData.email === null ||
-  //..   !orderData.email.includes("@") ||
-  //   orderData.name === null ||
-  //   orderData.name.trim() === "" ||
-  //   orderData.street === null ||
-  //   orderData.street.trim() === "" ||
-  //   orderData["postal-code"] === null ||
-  //   orderData["postal-code"].trim() === "" ||
-  //   orderData.city === null ||
-  //   orderData.city.trim() === ""
-  // ) {
-  //   return res.status(400).json({
-  //     message: "Missing data: Email, name, street, postal code or city is missing.",
-  //   });
-  // }
-
-  // const newOrder = {
-  //   ...orderData,
-  //   id: (Math.random() * 1000).toString(),
-  // };
-  // // const orders = await fs.readFile("./data/orders.json", "utf8");
-  // // const allOrders = JSON.parse(orders);
-  // // allOrders.push(newOrder);
-  // // await fs.writeFile("./data/orders.json", JSON.stringify(allOrders));
-  // // res.status(201).json({ message: "Order created!" });
-
+  const newOrder = {
+    ...orderData,
+    id: (Math.random() * 1000).toString(),
+  };
+  // const orders = await fs.readFile("./data/orders.json", "utf8");
+  // const allOrders = JSON.parse(orders);
+  // allOrders.push(newOrder);
+  // await fs.writeFile("./data/orders.json", JSON.stringify(allOrders));
+  // res.status(201).json({ message: "Order created!" });
+  res.status(200).json({message: newOrder})
   // await pool
   //   .query(
   //     "INSERT INTO (name, email, street, city) VALUES ($1, $2, $3, $4, $5) RETURNING *",
