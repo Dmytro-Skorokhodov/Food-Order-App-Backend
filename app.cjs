@@ -58,44 +58,41 @@ app.get("/orders", async (req, res) => {
 });
 
 app.post("/orders", async (req, res) => {
-  const orderData = req.body.order;
+  try {
+    const orderData = req.body.order;
 
-  if (orderData.items === null || orderData.items.length === 0) {
-    return res.status(400).json({
-      message:
-        "Missing meals in order, please consider adding some meals before send an order.",
-    });
-  }
+    if (orderData.items === null || orderData.items.length === 0) {
+      return res.status(400).json({
+        message:
+          "Missing meals in order, please consider adding some meals before sending an order.",
+      });
+    }
 
-  if (
-    orderData.email === null ||
-    !orderData.email.includes("@") ||
-    orderData.name === null ||
-    orderData.name.trim() === "" ||
-    orderData.street === null ||
-    orderData.street.trim() === "" ||
-    orderData["postal-code"] === null ||
-    orderData["postal-code"].trim() === "" ||
-    orderData.city === null ||
-    orderData.city.trim() === ""
-  ) {
-    return res.status(400).json({
-      message: "Missing data: Email, name, street, postal code or city is missing.",
-    });
-  }
+    if (
+      orderData.email === null ||
+      !orderData.email.includes("@") ||
+      orderData.name === null ||
+      orderData.name.trim() === "" ||
+      orderData.street === null ||
+      orderData.street.trim() === "" ||
+      orderData["postal-code"] === null ||
+      orderData["postal-code"].trim() === "" ||
+      orderData.city === null ||
+      orderData.city.trim() === ""
+    ) {
+      return res.status(400).json({
+        message:
+          "Missing data: Email, name, street, postal code, or city is missing.",
+      });
+    }
 
-  const newOrder = {
-    ...orderData,
-    id: (Math.random() * 1000).toString(),
-  };
-  // const orders = await fs.readFile("./data/orders.json", "utf8");
-  // const allOrders = JSON.parse(orders);
-  // allOrders.push(newOrder);
-  // await fs.writeFile("./data/orders.json", JSON.stringify(allOrders));
-  // res.status(201).json({ message: "Order created!" });
-  await pool
-    .query(
-      "INSERT INTO orders (name, email, street, city, postal_code) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+    const newOrder = {
+      ...orderData,
+      id: (Math.random() * 1000).toString(),
+    };
+
+    await pool.query(
+      "INSERT INTO orders (name, email, street, city, postal_code) VALUES ($1, $2, $3, $4, $5) RETURNING *",
       [
         newOrder.name,
         newOrder.email,
@@ -103,20 +100,14 @@ app.post("/orders", async (req, res) => {
         newOrder.city,
         newOrder["postal-code"],
       ]
-    )
-    .then(() => {
-      res.status(200).json({ message: "Order created!" });
-    })
-    .catch((err) => res.json(err));
-});
+    );
 
-app.use((req, res) => {
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
+    res.status(200).json({ message: "Order created!" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-
-  res.status(404).json({ message: "Not found" });
 });
+
 
 pool
   .connect()
