@@ -61,7 +61,7 @@ app.post("/orders", async (req, res) => {
   console.log(req);
   const orderData = req.body.order;
 
-  return res.status(200).json({ message: stringify(orderData) });
+  return res.status(200).json({ message: orderData });
 
   // if (orderData.items === null || orderData.items.length === 0) {
   //   return res.status(400).json({
