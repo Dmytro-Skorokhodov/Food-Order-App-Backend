@@ -58,7 +58,6 @@ app.get("/orders", async (req, res) => {
 });
 
 app.post("/orders", async (req, res) => {
-  console.log(req);
   const orderData = req.body.order;
 
   if (orderData.items === null || orderData.items.length === 0) {
@@ -94,7 +93,7 @@ app.post("/orders", async (req, res) => {
   // allOrders.push(newOrder);
   // await fs.writeFile("./data/orders.json", JSON.stringify(allOrders));
   // res.status(201).json({ message: "Order created!" });
-  res.status(200).json({message: newOrder})
+  res.status(200).json({ message: "Order created!", order: newOrder });
   // await pool
   //   .query(
   //     "INSERT INTO (name, email, street, city) VALUES ($1, $2, $3, $4, $5) RETURNING *",
