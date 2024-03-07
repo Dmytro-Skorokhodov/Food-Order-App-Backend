@@ -100,7 +100,7 @@ app.post("/orders", async (req, res) => {
     .catch((err) => res.status(500).json({ message: err.message }));
 });
 
-app.delete("/orders:id", async (req, res) => {
+app.delete("/orders/:id", async (req, res) => {
   try {
     const idToDelete = req.params.id;
 
