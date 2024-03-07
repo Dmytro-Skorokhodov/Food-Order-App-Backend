@@ -16,13 +16,6 @@ app.use(bodyParser.json());
 app.use(express.static("public"));
 app.use(cors());
 
-// {
-//   origin:
-//     "https://food-order-app-front-6m6hkqw5i-dmytro-skorokhodovs-projects.vercel.app",
-//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//   credentials: true,
-// }
-
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST");
@@ -98,13 +91,30 @@ app.post("/orders", async (req, res) => {
         newOrder.street,
         newOrder.city,
         newOrder["postal-code"],
-        newOrder.id
+        newOrder.id,
       ]
     )
     .then(() => {
       res.status(200).json({ message: "Order created!" });
     })
-    .catch((err) => res.status(500).json({message: err.message}));
+    .catch((err) => res.status(500).json({ message: err.message }));
+});
+
+app.delete("/orders:id", async (req, res) => {
+  try {
+    const idToDelete = req.params.id;
+
+    // Define the DELETE query
+    const deleteQuery = {
+      text: "DELETE FROM orders WHERE id = $1",
+      values: [idToDelete],
+    };
+
+    // Execute the DELETE query
+    await pool.query(deleteQuery);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 app.use((req, res) => {
