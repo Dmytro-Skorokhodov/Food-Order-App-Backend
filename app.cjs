@@ -82,23 +82,25 @@ app.post("/orders", async (req, res) => {
     id: (Math.random() * 1000).toString(),
   };
 
-  await pool
-    .query(
-      "INSERT INTO orders (name, email, street, city, postal_code, order_id, meals) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-      [
-        newOrder.name,
-        newOrder.email,
-        newOrder.street,
-        newOrder.city,
-        newOrder["postal-code"],
-        newOrder.id,
-        newOrder.meals,
-      ]
-    )
-    .then(() => {
-      res.status(200).json({ message: "Order created!" });
-    })
-    .catch((err) => res.status(500).json({ message: err.message }));
+  res.status(200).json({ message: newOrder });
+
+  // await pool
+  //   .query(
+  //     "INSERT INTO orders (name, email, street, city, postal_code, order_id, meals) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+  //     [
+  //       newOrder.name,
+  //       newOrder.email,
+  //       newOrder.street,
+  //       newOrder.city,
+  //       newOrder["postal-code"],
+  //       newOrder.id,
+  //       newOrder.meals,
+  //     ]
+  //   )
+  //   .then(() => {
+  //     res.status(200).json({ message: "Order created!" });
+  //   })
+  //   .catch((err) => res.status(500).json({ message: err.message }));
 });
 
 app.delete("/orders/:id", async (req, res) => {
