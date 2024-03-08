@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const pg = require("pg");
+const { stringify } = require("querystring");
 require("dotenv/config");
 
 const { Pool } = pg;
@@ -82,25 +83,25 @@ app.post("/orders", async (req, res) => {
     id: (Math.random() * 1000).toString(),
   };
 
-  res.status(200).json({ message: newOrder });
+  res.status(200).json({ message: JSON.stringify(newOrder) });
 
-  // await pool
-  //   .query(
-  //     "INSERT INTO orders (name, email, street, city, postal_code, order_id, meals) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-  //     [
-  //       newOrder.name,
-  //       newOrder.email,
-  //       newOrder.street,
-  //       newOrder.city,
-  //       newOrder["postal-code"],
-  //       newOrder.id,
-  //       newOrder.meals,
-  //     ]
-  //   )
-  //   .then(() => {
-  //     res.status(200).json({ message: "Order created!" });
-  //   })
-  //   .catch((err) => res.status(500).json({ message: err.message }));
+  await pool
+    .query(
+      "INSERT INTO orders (name, email, street, city, postal_code, order_id, meals) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+      [
+        newOrder.name,
+        newOrder.email,
+        newOrder.street,
+        newOrder.city,
+        newOrder["postal-code"],
+        newOrder.id,
+        newOrder.meals,
+      ]
+    )
+    .then(() => {
+      res.status(200).json({ message: "Order created!" });
+    })
+    .catch((err) => res.status(500).json({ message: err.message }));
 });
 
 app.delete("/orders/:id", async (req, res) => {
@@ -128,13 +129,8 @@ app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
 });
 
-pool
-  .connect()
-  .then(() => {
-    res.send("Connected!");
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+pool.connect().catch((err) => {
+  console.error(err);
+});
 
 module.exports = app;
