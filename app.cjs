@@ -84,7 +84,7 @@ app.post("/orders", async (req, res) => {
 
   await pool
     .query(
-      "INSERT INTO orders (name, email, street, city, postal_code, order_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+      "INSERT INTO orders (name, email, street, city, postal_code, order_id, meals) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
       [
         newOrder.name,
         newOrder.email,
@@ -92,6 +92,7 @@ app.post("/orders", async (req, res) => {
         newOrder.city,
         newOrder["postal-code"],
         newOrder.id,
+        newOrder.meals,
       ]
     )
     .then(() => {
