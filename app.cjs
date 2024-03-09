@@ -93,7 +93,7 @@ app.post("/orders", async (req, res) => {
         newOrder.city,
         newOrder["postal-code"],
         newOrder.id,
-        newOrder.items,
+        JSON.stringify(newOrder.items),
       ]
     )
     .then(() => {
