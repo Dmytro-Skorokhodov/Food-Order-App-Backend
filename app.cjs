@@ -83,8 +83,6 @@ app.post("/orders", async (req, res) => {
     id: (Math.random() * 1000).toString(),
   };
 
-  return res.status(200).json(newOrder);
-
   await pool
     .query(
       "INSERT INTO orders (name, email, street, city, postal_code, order_id, meals) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
@@ -95,7 +93,7 @@ app.post("/orders", async (req, res) => {
         newOrder.city,
         newOrder["postal-code"],
         newOrder.id,
-        newOrder.meals,
+        newOrder.items,
       ]
     )
     .then(() => {
